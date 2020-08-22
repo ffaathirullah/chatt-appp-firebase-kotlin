@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import org.fachrul.faathirullah.chattapp.MainActivity
+import org.fachrul.faathirullah.chattapp.main.MainActivity
 import org.fachrul.faathirullah.chattapp.R
 import org.fachrul.faathirullah.chattapp.databinding.ActivityLoginBinding
 
@@ -75,7 +75,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkSessionUser(){
         if (viewModel.isLogin()){
-            Intent(this,MainActivity::class.java).also { intent ->
+            Intent(this,
+                MainActivity::class.java).also { intent ->
                 startActivity(intent)
                 finish()
             }
@@ -97,7 +98,8 @@ class LoginActivity : AppCompatActivity() {
                     }
                     Status.SUCCESS -> {
                         hideLoading()
-                        Intent(this,MainActivity::class.java).also {intent ->
+                        Intent(this,
+                            MainActivity::class.java).also { intent ->
                             startActivity(intent)
                         }
                     }
