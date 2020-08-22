@@ -16,6 +16,7 @@ import org.fachrul.faathirullah.chattapp.databinding.ActivityLoginBinding
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    //inisialiasasi viewModel :
     private val viewModel by lazy {
         ViewModelProvider(this).get(LoginViewModel::class.java)
     }
@@ -32,6 +33,11 @@ class LoginActivity : AppCompatActivity() {
         initLoadingDialog()
         viewCicked()
         subscribeVm()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        checkSessionUser()
     }
 
     private  fun initLoadingDialog(){
@@ -64,6 +70,15 @@ class LoginActivity : AppCompatActivity() {
                 binding.textEmail.text.toString(),
                 binding.textPassword.text.toString()
             )
+        }
+    }
+
+    private fun checkSessionUser(){
+        if (viewModel.isLogin()){
+            Intent(this,MainActivity::class.java).also { intent ->
+                startActivity(intent)
+                finish()
+            }
         }
     }
 
