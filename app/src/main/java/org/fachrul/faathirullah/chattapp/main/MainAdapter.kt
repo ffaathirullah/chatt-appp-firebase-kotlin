@@ -4,6 +4,7 @@ import android.service.voice.AlwaysOnHotwordDetector
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import org.fachrul.faathirullah.chattapp.databinding.ActivityMainBinding
 import org.fachrul.faathirullah.chattapp.databinding.AdapterMyChatBinding
@@ -11,7 +12,8 @@ import org.fachrul.faathirullah.chattapp.databinding.AdapterOtherChatBinding
 import org.fachrul.faathirullah.chattapp.model.Chat
 
 class MainAdapter(
-    private val username : String
+    private val username : String,
+    private val viewModel : MainViewModel
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     private val MY_CHAT = 0
@@ -62,6 +64,11 @@ class MainAdapter(
         fun bindView(chat : Chat){
             binding.sender.text = chat.sender.orEmpty()
             binding.message.text = chat.message.orEmpty()
+
+            binding.bubble.setOnClickListener {
+                viewModel.onChatLongPress(chat)
+                true
+            }
         }
     }
 

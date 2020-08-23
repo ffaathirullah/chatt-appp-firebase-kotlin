@@ -3,21 +3,17 @@ package org.fachrul.faathirullah.chattapp.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
-import android.util.Log
-import android.view.LayoutInflater
+
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.LinearLayout
 import android.widget.Toast
-import android.widget.VideoView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.fachrul.faathirullah.chattapp.R
 import org.fachrul.faathirullah.chattapp.databinding.ActivityMainBinding
+import org.fachrul.faathirullah.chattapp.databinding.BottomsheetsBinding
 import org.fachrul.faathirullah.chattapp.login.LoginActivity
 
 class MainActivity : AppCompatActivity() {
@@ -61,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupRecyclerView(){
         val layoutManager = LinearLayoutManager(this)
         layoutManager.stackFromEnd = true
-        mainAdapter = MainAdapter(viewModel.getUsername())
+        mainAdapter = MainAdapter( viewModel.getUsername(), viewModel)
         binding.rvChat.layoutManager = layoutManager
         binding.rvChat.adapter = mainAdapter
     }
@@ -80,6 +76,13 @@ class MainActivity : AppCompatActivity() {
     private fun subscribeVM(){
         viewModel.chatList.observe(this, Observer { chats ->
             chats?.let { mainAdapter.setChatDataList(it) }
+        })
+
+        viewModel.chat.observe(this, Observer { chat ->
+            chat.let {
+                val bottomSheet = UpdateBottomDialog(it, viewModel)
+                bottomSheet.show(supportFragmentManager, "")
+            }
         })
     }
 }

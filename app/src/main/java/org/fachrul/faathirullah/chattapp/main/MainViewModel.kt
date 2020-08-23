@@ -26,6 +26,10 @@ class  MainViewModel : ViewModel(){
 
     private val MESSAGE ="message"
 
+    private val _chat by lazy { MutableLiveData<Chat>() }
+    val chat : LiveData<Chat>
+     get() = _chat
+
     private lateinit var valueEventListener: ValueEventListener
 
     fun doLogout(){
@@ -35,6 +39,10 @@ class  MainViewModel : ViewModel(){
     fun getUsername(): String{
         val email = firebaseAuth.currentUser?.email.orEmpty()
         return email.split("@").first()
+    }
+
+    fun onChatLongPress(chat: Chat){
+        _chat.value = chat
     }
 
     fun postMessage(mesaage :String){
@@ -64,4 +72,12 @@ class  MainViewModel : ViewModel(){
 
         databaseReference.child(MESSAGE).addValueEventListener(valueEventListener)
     }
+
+    fun updateChat(chat:Chat){
+        val childUpdater = hashMapOf<String, Any>(
+            "/$MESSAGE/${chat.fireBaseKey}" to chat.toMap()
+        )
+        databaseReference.updateChildren(childUpdater)
+    }
+
 }
